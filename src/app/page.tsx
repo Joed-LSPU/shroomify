@@ -1,0 +1,99 @@
+'use client'
+
+import React, { useState } from 'react';
+import { Camera, Home, User, History } from 'lucide-react';
+import Header from './tabs/Header';
+import HomeTab from './tabs/HomeTab';
+import ScanTab from './tabs/ScanTab';
+// import HistoryTab from './components/tabs/HistoryTab';
+import ProfileTab from './tabs/ProfileTab';
+import { AuthProvider } from '../lib/AuthContext';
+
+
+
+
+const ShroomifyApp = () => {
+  const [activeTab, setActiveTab] = useState('home');
+
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case 'home':
+        return <HomeTab />;
+      case 'scan':
+        return <ScanTab />;
+      // case 'history':
+      //   return <HistoryTab />;
+      case 'profile':
+        return <ProfileTab />;
+      // default:
+      //   return <HomeTab />;
+    }
+  };
+
+  return (
+    <AuthProvider>
+      <div className="min-h-screen bg-gray-900" style={{ backgroundColor: '#1f1f1f' }}>
+        <Header />
+        
+        <main className="pb-20 pt-20">
+          {renderActiveTab()}
+        </main>
+        
+        {/* Bottom Navigation */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-6 py-2 z-100">
+          <div className="flex items-center justify-around">
+            <button
+              onClick={() => setActiveTab('home')}
+              className={`flex flex-col items-center space-y-1 py-2 px-4 rounded-lg transition-colors ${
+                activeTab === 'home' 
+                  ? 'bg-green-600 text-white' 
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <Home className="w-5 h-5" />
+              <span className="text-xs">Home</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('scan')}
+              className={`flex flex-col items-center space-y-1 py-2 px-4 rounded-lg transition-colors ${
+                activeTab === 'scan' 
+                  ? 'bg-green-600 text-white' 
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <Camera className="w-5 h-5" />
+              <span className="text-xs">Scan</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('history')}
+              className={`flex flex-col items-center space-y-1 py-2 px-4 rounded-lg transition-colors ${
+                activeTab === 'history' 
+                  ? 'bg-green-600 text-white' 
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <History className="w-5 h-5" />
+              <span className="text-xs">History</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`flex flex-col items-center space-y-1 py-2 px-4 rounded-lg transition-colors ${
+                activeTab === 'profile' 
+                  ? 'bg-green-600 text-white' 
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <User className="w-5 h-5" />
+              <span className="text-xs">Profile</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </AuthProvider>
+  );
+};
+
+export default ShroomifyApp;

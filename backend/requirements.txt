@@ -1,0 +1,9 @@
+flask
+flask-cors
+torch
+numpy
+Pillow
+scikit-image
+scikit-learn
+tqdm
+matplotlib
