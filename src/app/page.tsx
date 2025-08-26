@@ -5,7 +5,7 @@ import { Camera, Home, User, History } from 'lucide-react';
 import Header from './tabs/Header';
 import HomeTab from './tabs/HomeTab';
 import ScanTab from './tabs/ScanTab';
-// import HistoryTab from './components/tabs/HistoryTab';
+import HistoryTab from './tabs/HistoryTab';
 import ProfileTab from './tabs/ProfileTab';
 import { AuthProvider } from '../lib/AuthContext';
 
@@ -21,8 +21,8 @@ const ShroomifyApp = () => {
         return <HomeTab />;
       case 'scan':
         return <ScanTab />;
-      // case 'history':
-      //   return <HistoryTab />;
+      case 'history':
+        return <HistoryTab />;
       case 'profile':
         return <ProfileTab />;
       // default:
