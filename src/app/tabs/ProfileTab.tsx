@@ -116,7 +116,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
         email: globalUser.email,
         phone: "+63 912 345 6789", // Default phone
         joinDate: new Date(globalUser.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
-        experienceLevel: "Intermediate",
+        experienceLevel: "Active",
         favoriteMethod: "Straw Substrate",
         avatar: null
       });
