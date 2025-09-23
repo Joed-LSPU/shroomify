@@ -1,5 +1,5 @@
 'use client';
-import { Camera, Video, Zap, Upload, CheckCircle, AlertTriangle, XCircle, X, Eye } from 'lucide-react';
+import { Camera, Zap, Upload, CheckCircle, AlertTriangle, XCircle, X, Eye } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import ErrorModal from "@/app/tabs/ErrorModal";
@@ -302,7 +302,6 @@ const ResultPopup = ({ result, previewImage, confidence, isOpen, onClose, isLogg
 const ScanTab = () => {
   const { isLoggedIn, user } = useAuth();
   console.log('ScanTab - isLoggedIn:', isLoggedIn); // Debug log
-  const [isLiveMode, setIsLiveMode] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const webcamRef = useRef<Webcam>(null);
   
@@ -644,35 +643,6 @@ const ScanTab = () => {
         <p className="text-gray-400">Detect contamination in your fruiting bags</p>
       </div>
 
-      {/* Toggle */}
-      <div className="flex justify-center mb-6">
-        <div className="bg-gray-800 p-1 rounded-full border border-gray-700">
-          <div className="flex items-center space-x-1">
-            <button
-              onClick={() => setIsLiveMode(false)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
-                !isLiveMode
-                  ? 'bg-gradient-to-r from-green-600 to-green-500 text-white shadow-lg'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Camera className="w-4 h-4" />
-              <span className="text-sm font-medium">Static</span>
-            </button>
-            <button
-              onClick={() => setIsLiveMode(true)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
-                isLiveMode
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <Video className="w-4 h-4" />
-              <span className="text-sm font-medium">Live Feed</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
       {/* Camera Interface */}
       <div className="relative">
@@ -697,9 +667,6 @@ const ScanTab = () => {
                 />
                 {/* Overlay UI */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                  <p className="text-gray-400 font-medium bg-black/50 px-2 rounded">
-                    {isLiveMode ? '' : ''}
-                  </p>
                 </div>
               </>
             )}
@@ -710,54 +677,41 @@ const ScanTab = () => {
             <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-green-400 rounded-bl-lg"></div>
             <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-green-400 rounded-br-lg"></div>
 
-            {/* Live Mode Indicator */}
-            {isLiveMode && !isScanning && (
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
-                <div className="flex items-center space-x-2 bg-red-600/20 border border-red-600/30 rounded-full px-3 py-1">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="text-red-400 text-xs font-medium">LIVE</span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
         {/* Buttons */}
         <div className="flex justify-center items-center mt-8 space-x-6">
-          {!isLiveMode && (
-            <button
-              onClick={handleUpload}
-              disabled={isScanning}
-              className={`w-16 h-16 rounded-full border-4 flex items-center justify-center transition-all duration-200 ${
-                isScanning
-                  ? 'border-gray-600 bg-gray-700 cursor-not-allowed'
-                  : 'border-amber-400 bg-amber-600 hover:bg-amber-500 hover:border-amber-300 transform hover:scale-105 shadow-lg shadow-amber-600/25'
-              }`}
-            >
-              {isScanning ? (
-                <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Upload className="w-6 h-6 text-white" />
-              )}
-            </button>
-          )}
-          {!isLiveMode && (
-            <button
-              onClick={handleSnap}
-              disabled={isScanning}
-              className={`w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-200 ${
-                isScanning
-                  ? 'border-gray-600 bg-gray-700 cursor-not-allowed'
-                  : 'border-green-400 bg-green-600 hover:bg-green-500 hover:border-green-300 transform hover:scale-105 shadow-lg shadow-green-600/25'
-              }`}
-            >
-              {isScanning ? (
-                <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <Camera className="w-8 h-8 text-white" />
-              )}
-            </button>
-          )}
+          <button
+            onClick={handleUpload}
+            disabled={isScanning}
+            className={`w-16 h-16 rounded-full border-4 flex items-center justify-center transition-all duration-200 ${
+              isScanning
+                ? 'border-gray-600 bg-gray-700 cursor-not-allowed'
+                : 'border-amber-400 bg-amber-600 hover:bg-amber-500 hover:border-amber-300 transform hover:scale-105 shadow-lg shadow-amber-600/25'
+            }`}
+          >
+            {isScanning ? (
+              <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <Upload className="w-6 h-6 text-white" />
+            )}
+          </button>
+          <button
+            onClick={handleSnap}
+            disabled={isScanning}
+            className={`w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-200 ${
+              isScanning
+                ? 'border-gray-600 bg-gray-700 cursor-not-allowed'
+                : 'border-green-400 bg-green-600 hover:bg-green-500 hover:border-green-300 transform hover:scale-105 shadow-lg shadow-green-600/25'
+            }`}
+          >
+            {isScanning ? (
+              <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <Camera className="w-8 h-8 text-white" />
+            )}
+          </button>
         </div>
 
         {/* Action Text */}
@@ -765,44 +719,36 @@ const ScanTab = () => {
           <p className="text-gray-400 text-sm">
             {isScanning
               ? 'Processing image for contamination...'
-              : isLiveMode
-              ? 'Live feed active - position your bag in view'
               : 'Tap to take a photo or upload an image'}
           </p>
         </div>
       </div>
 
       {/* Scanning Tips */}
-      {!isLiveMode && (
-        <div className="bg-gradient-to-r from-green-600/10 to-blue-600/10 rounded-lg p-4 border border-green-600/20">
-          <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
-            <Zap className="w-5 h-5 mr-2 text-yellow-400" />
-            Scanning Tips
-          </h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-              <p className="text-gray-300">Ensure good lighting on your fruiting bag</p>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-              <p className="text-gray-300">Hold camera steady and focus on the entire bag</p>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-              <p className="text-gray-300">Clean the bag surface for better detection accuracy</p>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-              <p className="text-gray-300">Use live feed mode for real-time positioning</p>
-            </div>
-            <div className="flex items-start space-x-2">
-              <div className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
-              <p className="text-gray-300">Upload existing photos from your gallery for analysis</p>
-            </div>
+      <div className="bg-gradient-to-r from-green-600/10 to-blue-600/10 rounded-lg p-4 border border-green-600/20">
+        <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
+          <Zap className="w-5 h-5 mr-2 text-yellow-400" />
+          Scanning Tips
+        </h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex items-start space-x-2">
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p className="text-gray-300">Ensure good lighting on your fruiting bag</p>
+          </div>
+          <div className="flex items-start space-x-2">
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p className="text-gray-300">Hold camera steady and focus on the entire bag</p>
+          </div>
+          <div className="flex items-start space-x-2">
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p className="text-gray-300">Clean the bag surface for better detection accuracy</p>
+          </div>
+          <div className="flex items-start space-x-2">
+            <div className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p className="text-gray-300">Upload existing photos from your gallery for analysis</p>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Result Popup */}
       <ResultPopup 
