@@ -19,6 +19,22 @@ const ShroomifyApp = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeTab]);
 
+  // Listen for navigation events from other components
+  useEffect(() => {
+    const handleNavigateToTab = (event: CustomEvent) => {
+      const { tabName } = event.detail;
+      if (tabName && ['home', 'scan', 'history', 'profile'].includes(tabName)) {
+        setActiveTab(tabName);
+      }
+    };
+
+    window.addEventListener('navigateToTab', handleNavigateToTab as EventListener);
+    
+    return () => {
+      window.removeEventListener('navigateToTab', handleNavigateToTab as EventListener);
+    };
+  }, []);
+
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'home':

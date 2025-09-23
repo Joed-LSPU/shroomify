@@ -40,7 +40,7 @@ const ResultPopup = ({ result, previewImage, confidence, isOpen, onClose, isLogg
 
   // Condition statements for different results
   const getResultData = (resultCode: number | string | null) => {
-    // Handle special case for no fruiting bag detected
+    // Handle special case for no fruiting bag detected - same for all users
     if (resultCode === 'no_fruiting_bag') {
       return {
         status: 'No Fruiting Bag Detected',
@@ -61,6 +61,53 @@ const ResultPopup = ({ result, previewImage, confidence, isOpen, onClose, isLogg
       };
     }
     
+    // For non-logged-in users, show simplified results
+    if (!isLoggedIn) {
+      switch (resultCode) {
+        case 0:
+          return {
+            status: 'Healthy Fruiting Bag',
+            icon: CheckCircle,
+            iconColor: 'text-green-500',
+            bgColor: 'bg-green-600/10',
+            borderColor: 'border-green-600/30',
+            message: 'No contamination detected',
+            description: '',
+            recommendations: [],
+            severity: 'success',
+            showSignInPrompt: true
+          };
+        case 1:
+        case 2:
+          return {
+            status: 'Contaminated Fruiting Bag',
+            icon: XCircle,
+            iconColor: 'text-red-500',
+            bgColor: 'bg-red-600/10',
+            borderColor: 'border-red-600/30',
+            message: 'Contamination detected',
+            description: '',
+            recommendations: [],
+            severity: 'danger',
+            showSignInPrompt: true
+          };
+        default:
+          return {
+            status: 'Unknown Result',
+            icon: AlertTriangle,
+            iconColor: 'text-gray-500',
+            bgColor: 'bg-gray-600/10',
+            borderColor: 'border-gray-600/30',
+            message: 'Unable to determine result',
+            description: 'The analysis could not be completed properly.',
+            recommendations: [],
+            severity: 'info',
+            showSignInPrompt: true
+          };
+      }
+    }
+    
+    // For logged-in users, show detailed results
     switch (resultCode) {
       case 0:
         return {
@@ -146,7 +193,7 @@ const ResultPopup = ({ result, previewImage, confidence, isOpen, onClose, isLogg
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white">{resultData.status}</h3>
-              {confidence !== null && (
+              {isLoggedIn && confidence !== null && (
                 <div className="mt-1 flex items-center space-x-2">
                   <span className="text-xs text-gray-500">Confidence:</span>
                   <div className="flex items-center space-x-1">
@@ -202,29 +249,49 @@ const ResultPopup = ({ result, previewImage, confidence, isOpen, onClose, isLogg
             </div>
           )}
 
-          {/* Description */}
-          <div className={`${resultData.bgColor} ${resultData.borderColor} border rounded-lg p-4`}>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              {resultData.description}
-            </p>
-          </div>
-
-          {/* Recommendations */}
-          <div>
-            <h4 className="text-lg font-semibold text-white mb-3">Recommendations</h4>
-            <div className="space-y-2">
-              {resultData.recommendations.map((recommendation, index) => (
-                <div key={index} className="flex items-start space-x-3">
-                  <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                    resultData.severity === 'success' ? 'bg-green-400' :
-                    resultData.severity === 'warning' ? 'bg-yellow-400' :
-                    resultData.severity === 'danger' ? 'bg-red-400' : 'bg-gray-400'
-                  }`}></div>
-                  <p className="text-gray-300 text-sm">{recommendation}</p>
-                </div>
-              ))}
+          {/* Description - show for logged-in users or no fruiting bag detected */}
+          {((isLoggedIn && resultData.description) || result === 'no_fruiting_bag') && (
+            <div className={`${resultData.bgColor} ${resultData.borderColor} border rounded-lg p-4`}>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                {resultData.description}
+              </p>
             </div>
-          </div>
+          )}
+
+          {/* Recommendations - show for logged-in users or no fruiting bag detected */}
+          {((isLoggedIn && resultData.recommendations && resultData.recommendations.length > 0) || result === 'no_fruiting_bag') && (
+            <div>
+              <h4 className="text-lg font-semibold text-white mb-3">Recommendations</h4>
+              <div className="space-y-2">
+                {resultData.recommendations.map((recommendation, index) => (
+                  <div key={index} className="flex items-start space-x-3">
+                    <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                      resultData.severity === 'success' ? 'bg-green-400' :
+                      resultData.severity === 'warning' ? 'bg-yellow-400' :
+                      resultData.severity === 'danger' ? 'bg-red-400' : 'bg-gray-400'
+                    }`}></div>
+                    <p className="text-gray-300 text-sm">{recommendation}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Sign-in prompt for non-logged-in users (except no fruiting bag detected) */}
+          {!isLoggedIn && resultData.showSignInPrompt && result !== 'no_fruiting_bag' && (
+            <div className="bg-blue-600/10 border border-blue-600/30 rounded-lg p-4">
+              <button
+                onClick={() => {
+                  // Navigate to ProfileTab by triggering a tab change
+                  const event = new CustomEvent('navigateToTab', { detail: { tabName: 'profile' } });
+                  window.dispatchEvent(event);
+                }}
+                className="text-blue-400 hover:text-blue-300 underline text-sm font-medium transition-colors text-left w-full"
+              >
+                Please sign-in to get a more detailed result
+              </button>
+            </div>
+          )}
 
           {/* Save Status Message */}
           {saveMessage && (
