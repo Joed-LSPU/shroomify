@@ -68,8 +68,10 @@ echo.
 echo Press Ctrl+C to stop the application
 echo.
 
+REM Clear screen before starting
+cls
+
 REM Start the application
 python start_ngrok.py
-cls
 
 pause
