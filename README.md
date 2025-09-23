@@ -1,47 +1,220 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shroomify - Mushroom Contamination Detection
 
-## Getting Started
+🍄 **Full-stack application for mushroom contamination classification using machine learning**
 
-First, run the development server:
+## 🚀 Production-Ready Backend
 
+**Domain:** `reliably-one-kiwi.ngrok-free.app`
+
+### Quick Start
+
+#### Prerequisites
+- Python 3.8+
+- ngrok account and authtoken
+- Model files: `ann_model_state_dict.pth` and `minmax_scaler.pkl`
+
+#### 1. Install ngrok
 ```bash
+# Download and install ngrok from https://ngrok.com/download
+# Set your authtoken
+ngrok config add-authtoken YOUR_AUTHTOKEN
+```
+
+#### 2. Deploy Backend
+```bash
+# Windows
+deploy.bat
+
+# Linux/Mac
+chmod +x deploy.sh
+./deploy.sh
+```
+
+#### 3. Manual Start
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export FLASK_DEBUG=False
+export PORT=5000
+
+# Start with ngrok
+python start_ngrok.py
+```
+
+## 🔧 API Endpoints
+
+### 🏠 Home
+- **URL:** `https://reliably-one-kiwi.ngrok-free.app/`
+- **Method:** GET
+- **Response:** API information
+
+### 🏥 Health Check
+- **URL:** `https://reliably-one-kiwi.ngrok-free.app/health`
+- **Method:** GET
+- **Response:** Service health status
+
+### 📤 Image Upload
+- **URL:** `https://reliably-one-kiwi.ngrok-free.app/api/upload`
+- **Method:** POST
+- **Content-Type:** multipart/form-data
+- **Body:** `image` (file)
+- **Response:**
+```json
+{
+  "result": 0,
+  "confidence": 0.95,
+  "image": "base64_encoded_image",
+  "status": "success"
+}
+```
+
+## 🛡️ Security Features
+
+- ✅ File type validation (PNG, JPG, JPEG, BMP, GIF)
+- ✅ File size limits (8MB max)
+- ✅ Rate limiting (5 requests/minute)
+- ✅ Secure filename handling
+- ✅ Automatic file cleanup
+- ✅ Input validation
+- ✅ Error handling
+
+## 🧠 Machine Learning Features
+
+- **YOLO Detection**: Bag detection before classification
+- **GLCM Features**: Texture analysis for contamination
+- **ResNet18 + CBAM**: Deep learning feature extraction
+- **ANN Classification**: Final contamination prediction
+- **Model Caching**: Optimized performance
+
+## 📦 Configuration
+
+Environment variables:
+- `FLASK_DEBUG`: Enable debug mode (default: False)
+- `PORT`: Server port (default: 5000)
+- `HOST`: Server host (default: 0.0.0.0)
+- `MAX_CONTENT_LENGTH`: Max upload size in bytes (default: 8MB)
+
+## 🏥 Monitoring
+
+- **Health Check:** `https://reliably-one-kiwi.ngrok-free.app/health`
+- **Logs:** Check console output for detailed logs
+- **Rate Limits:** 5 requests per minute per IP
+
+## 🚀 Frontend
+
+The repository also includes a Next.js frontend application with:
+- Modern React components
+- Authentication system
+- Image upload interface
+- Results visualization
+- User profile management
+
+## 📋 Project Structure
+
+```
+shroomify/
+├── backend/                 # Flask API
+│   ├── app.py              # Main application
+│   ├── requirements.txt   # Python dependencies
+│   ├── deploy.bat         # Windows deployment
+│   ├── deploy.sh          # Linux/Mac deployment
+│   └── README.md          # Backend documentation
+├── src/                    # Next.js frontend
+│   ├── app/               # App router pages
+│   ├── lib/               # Utilities and contexts
+│   └── components/         # React components
+├── public/                 # Static assets
+└── README.md              # This file
+```
+
+## 🔧 Development
+
+### Backend Development
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+
+### Frontend Development
+```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Supabase Setup
-
-Create a `.env.local` file in the project root with the following variables:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+### Backend (ngrok)
+```bash
+cd backend
+deploy.bat  # Windows
+./deploy.sh # Linux/Mac
 ```
 
-These are required for authentication and database access. You can find them in your Supabase project settings under API.
+### Frontend (Vercel)
+```bash
+npm run build
+vercel deploy
+```
+
+## 📊 Performance
+
+- **Model Loading**: Cached at startup for better performance
+- **File Processing**: Optimized image handling
+- **Memory Management**: Automatic cleanup
+- **Rate Limiting**: Prevents abuse
+
+## 🛠️ Troubleshooting
+
+### Model Loading Issues
+```bash
+# Check if model files exist
+ls -la ann_model_state_dict.pth minmax_scaler.pkl best.pt
+
+# Check logs for model loading errors
+python app.py
+```
+
+### ngrok Issues
+```bash
+# Check ngrok status
+ngrok status
+
+# Test ngrok connection
+ngrok http 5000 --domain=reliably-one-kiwi.ngrok-free.app
+```
+
+## 📈 Future Enhancements
+
+- [ ] Docker containerization
+- [ ] Database integration
+- [ ] User authentication
+- [ ] Batch processing
+- [ ] Model versioning
+- [ ] Performance monitoring
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For issues or questions:
+1. Check the health endpoint first
+2. Review application logs
+3. Verify model files are present
+4. Test with small image files first
+
+---
+
+**Ready for production deployment! 🚀**
