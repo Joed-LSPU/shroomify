@@ -70,5 +70,6 @@ echo.
 
 REM Start the application
 python start_ngrok.py
+cls
 
 pause
