@@ -741,23 +741,23 @@ const ScanTab = () => {
               )}
             </button>
           )}
-          <button
-            onClick={handleSnap}
-            disabled={isScanning}
-            className={`w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-200 ${
-              isScanning
-                ? 'border-gray-600 bg-gray-700 cursor-not-allowed'
-                : isLiveMode
-                ? 'border-blue-400 bg-blue-600 hover:bg-blue-500 hover:border-blue-300 transform hover:scale-105 shadow-lg shadow-blue-600/25'
-                : 'border-green-400 bg-green-600 hover:bg-green-500 hover:border-green-300 transform hover:scale-105 shadow-lg shadow-green-600/25'
-            }`}
-          >
-            {isScanning ? (
-              <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <Camera className="w-8 h-8 text-white" />
-            )}
-          </button>
+          {!isLiveMode && (
+            <button
+              onClick={handleSnap}
+              disabled={isScanning}
+              className={`w-20 h-20 rounded-full border-4 flex items-center justify-center transition-all duration-200 ${
+                isScanning
+                  ? 'border-gray-600 bg-gray-700 cursor-not-allowed'
+                  : 'border-green-400 bg-green-600 hover:bg-green-500 hover:border-green-300 transform hover:scale-105 shadow-lg shadow-green-600/25'
+              }`}
+            >
+              {isScanning ? (
+                <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <Camera className="w-8 h-8 text-white" />
+              )}
+            </button>
+          )}
         </div>
 
         {/* Action Text */}
@@ -766,43 +766,43 @@ const ScanTab = () => {
             {isScanning
               ? 'Processing image for contamination...'
               : isLiveMode
-              ? 'Tap to capture from live feed'
+              ? 'Live feed active - position your bag in view'
               : 'Tap to take a photo or upload an image'}
           </p>
         </div>
       </div>
 
       {/* Scanning Tips */}
-      <div className="bg-gradient-to-r from-green-600/10 to-blue-600/10 rounded-lg p-4 border border-green-600/20">
-        <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
-          <Zap className="w-5 h-5 mr-2 text-yellow-400" />
-          Scanning Tips
-        </h3>
-        <div className="space-y-2 text-sm">
-          <div className="flex items-start space-x-2">
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-            <p className="text-gray-300">Ensure good lighting on your fruiting bag</p>
-          </div>
-          <div className="flex items-start space-x-2">
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-            <p className="text-gray-300">Hold camera steady and focus on the entire bag</p>
-          </div>
-          <div className="flex items-start space-x-2">
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-            <p className="text-gray-300">Clean the bag surface for better detection accuracy</p>
-          </div>
-          <div className="flex items-start space-x-2">
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-            <p className="text-gray-300">Use live feed mode for real-time positioning</p>
-          </div>
-          {!isLiveMode && (
+      {!isLiveMode && (
+        <div className="bg-gradient-to-r from-green-600/10 to-blue-600/10 rounded-lg p-4 border border-green-600/20">
+          <h3 className="text-lg font-semibold text-white mb-3 flex items-center">
+            <Zap className="w-5 h-5 mr-2 text-yellow-400" />
+            Scanning Tips
+          </h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-start space-x-2">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+              <p className="text-gray-300">Ensure good lighting on your fruiting bag</p>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+              <p className="text-gray-300">Hold camera steady and focus on the entire bag</p>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+              <p className="text-gray-300">Clean the bag surface for better detection accuracy</p>
+            </div>
+            <div className="flex items-start space-x-2">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+              <p className="text-gray-300">Use live feed mode for real-time positioning</p>
+            </div>
             <div className="flex items-start space-x-2">
               <div className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
               <p className="text-gray-300">Upload existing photos from your gallery for analysis</p>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Result Popup */}
       <ResultPopup 
