@@ -1,33 +1,36 @@
-# Shroomify Backend - ngrok Deployment
+# Shroomify - Mushroom Contamination Detection
 
-🍄 **Mushroom Contamination Classification API**
+🍄 **Full-stack application for mushroom contamination classification using machine learning**
+
+## 🚀 Production-Ready Backend
 
 **Domain:** `reliably-one-kiwi.ngrok-free.app`
 
-## Quick Start
+### Quick Start
 
-### Prerequisites
+#### Prerequisites
 - Python 3.8+
 - ngrok account and authtoken
 - Model files: `ann_model_state_dict.pth` and `minmax_scaler.pkl`
 
-### 1. Install ngrok
+#### 1. Install ngrok
 ```bash
 # Download and install ngrok from https://ngrok.com/download
 # Set your authtoken
 ngrok config add-authtoken YOUR_AUTHTOKEN
 ```
 
-### 2. Deploy
+#### 2. Deploy Backend
 ```bash
-# Make script executable
-chmod +x deploy.sh
+# Windows
+deploy.bat
 
-# Run deployment
+# Linux/Mac
+chmod +x deploy.sh
 ./deploy.sh
 ```
 
-### 3. Manual Start
+#### 3. Manual Start
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -40,7 +43,7 @@ export PORT=5000
 python start_ngrok.py
 ```
 
-## API Endpoints
+## 🔧 API Endpoints
 
 ### 🏠 Home
 - **URL:** `https://reliably-one-kiwi.ngrok-free.app/`
@@ -62,11 +65,12 @@ python start_ngrok.py
 {
   "result": 0,
   "confidence": 0.95,
+  "image": "base64_encoded_image",
   "status": "success"
 }
 ```
 
-## Security Features
+## 🛡️ Security Features
 
 - ✅ File type validation (PNG, JPG, JPEG, BMP, GIF)
 - ✅ File size limits (8MB max)
@@ -76,7 +80,15 @@ python start_ngrok.py
 - ✅ Input validation
 - ✅ Error handling
 
-## Configuration
+## 🧠 Machine Learning Features
+
+- **YOLO Detection**: Bag detection before classification
+- **GLCM Features**: Texture analysis for contamination
+- **ResNet18 + CBAM**: Deep learning feature extraction
+- **ANN Classification**: Final contamination prediction
+- **Model Caching**: Optimized performance
+
+## 📦 Configuration
 
 Environment variables:
 - `FLASK_DEBUG`: Enable debug mode (default: False)
@@ -84,18 +96,82 @@ Environment variables:
 - `HOST`: Server host (default: 0.0.0.0)
 - `MAX_CONTENT_LENGTH`: Max upload size in bytes (default: 8MB)
 
-## Monitoring
+## 🏥 Monitoring
 
 - **Health Check:** `https://reliably-one-kiwi.ngrok-free.app/health`
 - **Logs:** Check console output for detailed logs
 - **Rate Limits:** 5 requests per minute per IP
 
-## Troubleshooting
+## 🚀 Frontend
+
+The repository also includes a Next.js frontend application with:
+- Modern React components
+- Authentication system
+- Image upload interface
+- Results visualization
+- User profile management
+
+## 📋 Project Structure
+
+```
+shroomify/
+├── backend/                 # Flask API
+│   ├── app.py              # Main application
+│   ├── requirements.txt   # Python dependencies
+│   ├── deploy.bat         # Windows deployment
+│   ├── deploy.sh          # Linux/Mac deployment
+│   └── README.md          # Backend documentation
+├── src/                    # Next.js frontend
+│   ├── app/               # App router pages
+│   ├── lib/               # Utilities and contexts
+│   └── components/         # React components
+├── public/                 # Static assets
+└── README.md              # This file
+```
+
+## 🔧 Development
+
+### Backend Development
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+
+### Frontend Development
+```bash
+npm install
+npm run dev
+```
+
+## 🚀 Deployment
+
+### Backend (ngrok)
+```bash
+cd backend
+deploy.bat  # Windows
+./deploy.sh # Linux/Mac
+```
+
+### Frontend (Vercel)
+```bash
+npm run build
+vercel deploy
+```
+
+## 📊 Performance
+
+- **Model Loading**: Cached at startup for better performance
+- **File Processing**: Optimized image handling
+- **Memory Management**: Automatic cleanup
+- **Rate Limiting**: Prevents abuse
+
+## 🛠️ Troubleshooting
 
 ### Model Loading Issues
 ```bash
 # Check if model files exist
-ls -la ann_model_state_dict.pth minmax_scaler.pkl
+ls -la ann_model_state_dict.pth minmax_scaler.pkl best.pt
 
 # Check logs for model loading errors
 python app.py
@@ -110,23 +186,35 @@ ngrok status
 ngrok http 5000 --domain=reliably-one-kiwi.ngrok-free.app
 ```
 
-### Performance Issues
-- Monitor memory usage during classification
-- Check rate limiting logs
-- Verify model files are not corrupted
+## 📈 Future Enhancements
 
-## Production Notes
+- [ ] Docker containerization
+- [ ] Database integration
+- [ ] User authentication
+- [ ] Batch processing
+- [ ] Model versioning
+- [ ] Performance monitoring
 
-- Models are loaded once at startup for better performance
-- Files are automatically cleaned up after processing
-- Rate limiting prevents abuse
-- Comprehensive error handling and logging
-- Security headers and validation
+## 🤝 Contributing
 
-## Support
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Support
 
 For issues or questions:
 1. Check the health endpoint first
 2. Review application logs
 3. Verify model files are present
 4. Test with small image files first
+
+---
+
+**Ready for production deployment! 🚀**
