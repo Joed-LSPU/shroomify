@@ -409,7 +409,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
 
       // Calculate average scans per day (based on last 30 days)
       const totalDays = Math.max(1, Math.floor((now.getTime() - monthAgo.getTime()) / (24 * 60 * 60 * 1000)));
-      const averagePerDay = totalDays > 0 ? Math.round((monthScans / totalDays) * 10) / 10 : 0;
+      const averagePerDay = totalDays > 0 ? Math.ceil(monthScans / totalDays) : 0;
 
       setStatistics({
         today: todayScans,
